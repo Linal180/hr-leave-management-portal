@@ -41,11 +41,13 @@ import { useAuth } from '../../contexts/AuthContext';
 interface LeaveRequestListProps {
   isManager?: boolean;
   refreshTrigger?: number;
+  onRefresh?: () => void;
 }
 
 const LeaveRequestList: React.FC<LeaveRequestListProps> = ({ 
   isManager = false, 
-  refreshTrigger = 0 
+  refreshTrigger = 0,
+  onRefresh
 }) => {
   const { user } = useAuth();
   const [requests, setRequests] = useState<LeaveRequestWithEmployee[]>([]);
@@ -137,6 +139,9 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
       setApprovalDialogOpen(false);
       setSelectedRequest(null);
       fetchRequests(); // Refresh the list
+      if (onRefresh) {
+        onRefresh(); // Also refresh parent component
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || MESSAGES.ERROR.GENERIC_ERROR);
     } finally {

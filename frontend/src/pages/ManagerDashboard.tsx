@@ -24,22 +24,22 @@ import { LeaveRequestWithEmployee } from '../types';
 
 const ManagerDashboard: React.FC = () => {
   const { user } = useAuth();
-  const [pendingRequests, setPendingRequests] = useState<LeaveRequestWithEmployee[]>([]);
+  const [allRequests, setAllRequests] = useState<LeaveRequestWithEmployee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    fetchPendingRequests();
+    fetchAllRequests();
   }, []);
 
-  const fetchPendingRequests = async () => {
+  const fetchAllRequests = async () => {
     try {
       setLoading(true);
       setError('');
-      const requests = await apiService.getPendingLeaveRequests();
-      setPendingRequests(requests);
+      const requests = await apiService.getAllLeaveRequests();
+      setAllRequests(requests);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Failed to fetch pending requests');
+      setError(err.response?.data?.message || 'Failed to fetch leave requests');
     } finally {
       setLoading(false);
     }
@@ -53,9 +53,9 @@ const ManagerDashboard: React.FC = () => {
     );
   }
 
-  const pendingCount = pendingRequests.length;
-  const approvedCount = pendingRequests.filter(req => req.status === 'approved').length;
-  const rejectedCount = pendingRequests.filter(req => req.status === 'rejected').length;
+  const pendingCount = allRequests.filter(req => req.status === 'pending').length;
+  const approvedCount = allRequests.filter(req => req.status === 'approved').length;
+  const rejectedCount = allRequests.filter(req => req.status === 'rejected').length;
 
   return (
     <Box>
@@ -190,7 +190,11 @@ const ManagerDashboard: React.FC = () => {
               {error}
             </Alert>
           )}
-          <LeaveRequestList isManager={true} />
+          <LeaveRequestList 
+            isManager={true} 
+            refreshTrigger={allRequests.length}
+            onRefresh={fetchAllRequests}
+          />
         </Grid>
       </Grid>
     </Box>
