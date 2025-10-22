@@ -1,12 +1,13 @@
 import { MOCK_CREDENTIALS } from '../utils/constants';
 import { User } from '../models/User';
 import { LoginResponse } from '../types';
+import UserService from './userService';
 
 class AuthService {
-  private users: User[];
+  private userService: UserService;
 
   constructor() {
-    this.users = User.createMockUsers();
+    this.userService = UserService.getInstance();
   }
 
   // Mock login function
@@ -17,7 +18,7 @@ class AuthService {
       throw new Error('Invalid credentials');
     }
 
-    const user = this.users.find(user => user.id === credentials.userId);
+    const user = this.userService.getUserById(credentials.userId);
     if (!user) {
       throw new Error('User not found');
     }
@@ -34,17 +35,17 @@ class AuthService {
 
   // Get user by ID
   getUserById(userId: string) {
-    return this.users.find(user => user.id === userId);
+    return this.userService.getUserById(userId);
   }
 
   // Get all users (for admin purposes)
   getAllUsers() {
-    return this.users.map(user => user.toJSON());
+    return this.userService.getUsers().map(user => user.toJSON());
   }
 
   // Get users by role
   getUsersByRole(role: 'employee' | 'manager') {
-    return this.users
+    return this.userService.getUsers()
       .filter(user => user.role === role)
       .map(user => user.toJSON());
   }

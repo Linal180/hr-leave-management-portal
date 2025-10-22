@@ -2,6 +2,7 @@ import { LeaveRequest } from '../models/LeaveRequest';
 import { User } from '../models/User';
 import { checkDateOverlap, validateDateRange } from '../utils/validation';
 import { MESSAGES, LEAVE_STATUS } from '../utils/constants';
+import UserService from './userService';
 import { 
   LeaveRequestWithEmployee, 
   LeaveApplicationRequest, 
@@ -11,17 +12,17 @@ import {
 
 class LeaveService {
   private leaveRequests: LeaveRequest[];
-  private users: User[];
+  private userService: UserService;
 
   constructor() {
     this.leaveRequests = LeaveRequest.createMockRequests();
-    this.users = User.createMockUsers();
+    this.userService = UserService.getInstance();
   }
 
   // Get all leave requests
   getAllLeaveRequests(): LeaveRequestWithEmployee[] {
     return this.leaveRequests.map(request => {
-      const employee = this.users.find(user => user.id === request.employeeId);
+      const employee = this.userService.getUserById(request.employeeId);
       return {
         ...request.toJSON(),
         employeeName: employee ? employee.name : 'Unknown',
@@ -35,7 +36,7 @@ class LeaveService {
     return this.leaveRequests
       .filter(request => request.status === LEAVE_STATUS.PENDING)
       .map(request => {
-        const employee = this.users.find(user => user.id === request.employeeId);
+        const employee = this.userService.getUserById(request.employeeId);
         return {
           ...request.toJSON(),
           employeeName: employee ? employee.name : 'Unknown',
@@ -53,7 +54,7 @@ class LeaveService {
 
   // Apply for leave
   applyForLeave(employeeId: string, leaveData: LeaveApplicationRequest) {
-    const employee = this.users.find(user => user.id === employeeId);
+    const employee = this.userService.getUserById(employeeId);
     if (!employee) {
       throw new Error('Employee not found');
     }
@@ -120,7 +121,7 @@ class LeaveService {
       throw new Error('Leave request has already been processed');
     }
 
-    const employee = this.users.find(user => user.id === request.employeeId);
+    const employee = this.userService.getUserById(request.employeeId);
     if (!employee) {
       throw new Error('Employee not found');
     }
@@ -140,6 +141,9 @@ class LeaveService {
       
       // Deduct leave balance
       employee.leaveBalance -= request.getDuration();
+      
+      // Update the user in the shared UserService
+      this.userService.updateUser(employee);
       
       console.log(`Employee leave balance after: ${employee.leaveBalance}`);
       
@@ -178,7 +182,7 @@ class LeaveService {
       rejectedRequests: monthlyRequests.filter(req => req.status === LEAVE_STATUS.REJECTED).length,
       pendingRequests: monthlyRequests.filter(req => req.status === LEAVE_STATUS.PENDING).length,
       requests: monthlyRequests.map(request => {
-        const employee = this.users.find(user => user.id === request.employeeId);
+        const employee = this.userService.getUserById(request.employeeId);
         return {
           ...request.toJSON(),
           employeeName: employee ? employee.name : 'Unknown',
