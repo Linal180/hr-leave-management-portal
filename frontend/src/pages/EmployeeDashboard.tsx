@@ -21,9 +21,10 @@ import {
   Security
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
-import { ROLES } from '../constants';
+import { ROLES, APP_STRINGS } from '../constants';
 import LeaveForm from '../components/Leave/LeaveForm';
 import LeaveRequestList from '../components/Leave/LeaveRequestList';
+import { Email } from '@mui/icons-material';
 
 const EmployeeDashboard: React.FC = () => {
   const { user } = useAuth();
@@ -44,11 +45,11 @@ const EmployeeDashboard: React.FC = () => {
   return (
     <Box>
       <Typography variant="h4" component="h1" gutterBottom>
-        Employee Dashboard
+        {APP_STRINGS.EMPLOYEE_DASHBOARD}
       </Typography>
       
       <Typography variant="body1" color="text.secondary" gutterBottom>
-        Welcome back, {user.name}! Manage your leave requests here.
+        {APP_STRINGS.WELCOME_BACK}, {user.name}! {APP_STRINGS.MANAGE_LEAVE_REQUESTS}
       </Typography>
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
@@ -84,7 +85,7 @@ const EmployeeDashboard: React.FC = () => {
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                   <Email sx={{ mr: 1, fontSize: 16 }} />
-                  Email
+                  {APP_STRINGS.EMAIL_ADDRESS}
                 </Typography>
                 <Typography variant="body1">
                   {user.email}
@@ -94,7 +95,7 @@ const EmployeeDashboard: React.FC = () => {
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                   <Business sx={{ mr: 1, fontSize: 16 }} />
-                  Department
+                  {APP_STRINGS.DEPARTMENT}
                 </Typography>
                 <Typography variant="body1">
                   {user.department}
@@ -104,10 +105,10 @@ const EmployeeDashboard: React.FC = () => {
               <Box>
                 <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
                   <CalendarToday sx={{ mr: 1, fontSize: 16 }} />
-                  Leave Balance
+                  {APP_STRINGS.CURRENT_LEAVE_BALANCE}
                 </Typography>
                 <Typography variant="h4" color="primary.main" fontWeight="bold">
-                  {user.leaveBalance} days
+                  {user.leaveBalance} {APP_STRINGS.DAYS}
                 </Typography>
               </Box>
             </CardContent>

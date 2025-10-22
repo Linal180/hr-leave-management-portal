@@ -21,7 +21,7 @@ import {
   Assessment
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
-import { ROLES } from '../constants';
+import { ROLES, APP_STRINGS } from '../constants';
 import LeaveRequestList from '../components/Leave/LeaveRequestList';
 import MonthlySummary from '../components/Leave/MonthlySummary';
 import apiService from '../services/api';
@@ -90,11 +90,11 @@ const ManagerDashboard: React.FC = () => {
   return (
     <Box>
       <Typography variant="h4" component="h1" gutterBottom>
-        Manager Dashboard
+        {APP_STRINGS.MANAGER_DASHBOARD}
       </Typography>
       
       <Typography variant="body1" color="text.secondary" gutterBottom>
-        Welcome back, {user.name}! Review and manage leave requests from your team.
+        {APP_STRINGS.WELCOME_BACK}, {user.name}! {APP_STRINGS.REVIEW_AND_MANAGE}
       </Typography>
 
       <Grid container spacing={3} sx={{ mt: 2 }}>
@@ -104,12 +104,12 @@ const ManagerDashboard: React.FC = () => {
             <CardContent>
               <Box display="flex" alignItems="center" mb={2}>
                 <Person sx={{ mr: 1, color: 'primary.main' }} />
-                <Typography variant="h6">Profile</Typography>
+                <Typography variant="h6">{APP_STRINGS.PROFILE}</Typography>
               </Box>
               
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Name
+                  {APP_STRINGS.FULL_NAME}
                 </Typography>
                 <Typography variant="body1" fontWeight="medium">
                   {user.name}
@@ -118,7 +118,7 @@ const ManagerDashboard: React.FC = () => {
               
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Email
+                  {APP_STRINGS.EMAIL_ADDRESS}
                 </Typography>
                 <Typography variant="body1">
                   {user.email}
@@ -127,7 +127,7 @@ const ManagerDashboard: React.FC = () => {
               
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Department
+                  {APP_STRINGS.DEPARTMENT}
                 </Typography>
                 <Typography variant="body1">
                   {user.department}
@@ -136,7 +136,7 @@ const ManagerDashboard: React.FC = () => {
               
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Role
+                  {APP_STRINGS.ROLE}
                 </Typography>
                 <Chip 
                   label="Manager" 
@@ -147,10 +147,10 @@ const ManagerDashboard: React.FC = () => {
               
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Leave Balance
+                  {APP_STRINGS.CURRENT_LEAVE_BALANCE}
                 </Typography>
                 <Typography variant="h5" color="primary.main" fontWeight="bold">
-                  {user.leaveBalance} days
+                  {user.leaveBalance} {APP_STRINGS.DAYS}
                 </Typography>
               </Box>
             </CardContent>
@@ -165,13 +165,13 @@ const ManagerDashboard: React.FC = () => {
                 <CardContent>
                   <Box display="flex" alignItems="center" mb={1}>
                     <Pending sx={{ mr: 1, color: 'warning.main' }} />
-                    <Typography variant="h6">Pending</Typography>
+                    <Typography variant="h6">{APP_STRINGS.PENDING}</Typography>
                   </Box>
                   <Typography variant="h4" color="warning.main" fontWeight="bold">
                     {loading ? <CircularProgress size={24} /> : pendingCount}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Awaiting approval
+                    {APP_STRINGS.AWAITING_APPROVAL}
                   </Typography>
                 </CardContent>
               </Card>
@@ -182,13 +182,13 @@ const ManagerDashboard: React.FC = () => {
                 <CardContent>
                   <Box display="flex" alignItems="center" mb={1}>
                     <CheckCircle sx={{ mr: 1, color: 'success.main' }} />
-                    <Typography variant="h6">Approved</Typography>
+                    <Typography variant="h6">{APP_STRINGS.APPROVED}</Typography>
                   </Box>
                   <Typography variant="h4" color="success.main" fontWeight="bold">
                     {loading ? <CircularProgress size={24} /> : approvedCount}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    This period
+                    {APP_STRINGS.THIS_PERIOD}
                   </Typography>
                 </CardContent>
               </Card>
@@ -199,13 +199,13 @@ const ManagerDashboard: React.FC = () => {
                 <CardContent>
                   <Box display="flex" alignItems="center" mb={1}>
                     <Cancel sx={{ mr: 1, color: 'error.main' }} />
-                    <Typography variant="h6">Rejected</Typography>
+                    <Typography variant="h6">{APP_STRINGS.REJECTED}</Typography>
                   </Box>
                   <Typography variant="h4" color="error.main" fontWeight="bold">
                     {loading ? <CircularProgress size={24} /> : rejectedCount}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    This period
+                    {APP_STRINGS.THIS_PERIOD}
                   </Typography>
                 </CardContent>
               </Card>
@@ -229,13 +229,13 @@ const ManagerDashboard: React.FC = () => {
                       <Pending />
                     </Badge>
                   } 
-                  label="Pending Requests" 
+                  label={APP_STRINGS.PENDING_LEAVE_REQUESTS} 
                   iconPosition="start"
                   sx={{ textTransform: 'none', fontWeight: 'medium' }}
                 />
                 <Tab 
                   icon={<Assessment />} 
-                  label="Monthly Summary" 
+                  label={APP_STRINGS.MONTHLY_LEAVE_SUMMARY} 
                   iconPosition="start"
                   sx={{ textTransform: 'none', fontWeight: 'medium' }}
                 />

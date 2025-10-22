@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Box,
   Card,
@@ -6,33 +6,20 @@ import {
   Typography,
   Avatar,
   Chip,
-  Button,
   Grid,
   Divider,
-  Alert,
-  CircularProgress,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField
+  Alert
 } from '@mui/material';
 import {
-  Edit,
   Person,
-  Email,
-  Business,
   CalendarToday,
   Security
 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
-import { ROLES } from '../../constants';
+import { ROLES, APP_STRINGS } from '../../constants';
 
 const UserProfile: React.FC = () => {
   const { user } = useAuth();
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   if (!user) {
     return (
@@ -62,7 +49,7 @@ const UserProfile: React.FC = () => {
   return (
     <Box>
       <Typography variant="h4" component="h1" gutterBottom>
-        Profile
+        {APP_STRINGS.PROFILE}
       </Typography>
       
       <Typography variant="body1" color="text.secondary" gutterBottom>
@@ -102,13 +89,6 @@ const UserProfile: React.FC = () => {
                     />
                   </Box>
                 </Box>
-                <Button
-                  variant="outlined"
-                  startIcon={<Edit />}
-                  onClick={() => setEditDialogOpen(true)}
-                >
-                  Edit Profile
-                </Button>
               </Box>
             </CardContent>
           </Card>
@@ -120,13 +100,13 @@ const UserProfile: React.FC = () => {
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                 <Person sx={{ mr: 1, color: 'primary.main' }} />
-                Personal Information
+                {APP_STRINGS.PERSONAL_INFORMATION}
               </Typography>
               <Divider sx={{ mb: 2 }} />
               
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Full Name
+                  {APP_STRINGS.FULL_NAME}
                 </Typography>
                 <Typography variant="body1" fontWeight="medium">
                   {user.name}
@@ -135,7 +115,7 @@ const UserProfile: React.FC = () => {
               
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Email Address
+                  {APP_STRINGS.EMAIL_ADDRESS}
                 </Typography>
                 <Typography variant="body1">
                   {user.email}
@@ -144,7 +124,7 @@ const UserProfile: React.FC = () => {
               
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Role
+                  {APP_STRINGS.ROLE}
                 </Typography>
                 <Chip
                   label={getRoleDisplayName(user.role)}
@@ -155,7 +135,7 @@ const UserProfile: React.FC = () => {
               
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Department
+                  {APP_STRINGS.DEPARTMENT}
                 </Typography>
                 <Typography variant="body1">
                   {user.department}
@@ -171,22 +151,22 @@ const UserProfile: React.FC = () => {
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                 <CalendarToday sx={{ mr: 1, color: 'primary.main' }} />
-                Leave Information
+                {APP_STRINGS.LEAVE_INFORMATION}
               </Typography>
               <Divider sx={{ mb: 2 }} />
               
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Current Leave Balance
+                  {APP_STRINGS.CURRENT_LEAVE_BALANCE}
                 </Typography>
                 <Typography variant="h4" color="primary.main" fontWeight="bold">
-                  {user.leaveBalance} days
+                  {user.leaveBalance} {APP_STRINGS.DAYS}
                 </Typography>
               </Box>
               
               <Box mb={2}>
                 <Typography variant="body2" color="text.secondary">
-                  Account Created
+                  {APP_STRINGS.ACCOUNT_CREATED}
                 </Typography>
                 <Typography variant="body1">
                   {new Date(user.createdAt).toLocaleDateString()}
@@ -195,10 +175,10 @@ const UserProfile: React.FC = () => {
               
               <Box>
                 <Typography variant="body2" color="text.secondary">
-                  Leave Policy
+                  {APP_STRINGS.LEAVE_POLICY}
                 </Typography>
                 <Typography variant="body1">
-                  Standard annual leave policy applies
+                  {APP_STRINGS.STANDARD_ANNUAL_LEAVE}
                 </Typography>
               </Box>
             </CardContent>
@@ -211,7 +191,7 @@ const UserProfile: React.FC = () => {
             <CardContent>
               <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center' }}>
                 <Security sx={{ mr: 1, color: 'primary.main' }} />
-                Security & Access
+                {APP_STRINGS.SECURITY_ACCESS}
               </Typography>
               <Divider sx={{ mb: 2 }} />
               
@@ -219,15 +199,15 @@ const UserProfile: React.FC = () => {
                 <Grid item xs={12} sm={6}>
                   <Box>
                     <Typography variant="body2" color="text.secondary">
-                      Account Status
+                      {APP_STRINGS.ACCOUNT_STATUS}
                     </Typography>
-                    <Chip label="Active" color="success" size="small" />
+                    <Chip label={APP_STRINGS.ACTIVE} color="success" size="small" />
                   </Box>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Box>
                     <Typography variant="body2" color="text.secondary">
-                      Last Login
+                      {APP_STRINGS.LAST_LOGIN}
                     </Typography>
                     <Typography variant="body1">
                       {new Date().toLocaleDateString()}
@@ -239,42 +219,6 @@ const UserProfile: React.FC = () => {
           </Card>
         </Grid>
       </Grid>
-
-      {/* Edit Profile Dialog */}
-      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent>
-          <Box sx={{ pt: 1 }}>
-            <TextField
-              fullWidth
-              label="Full Name"
-              defaultValue={user.name}
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              label="Email Address"
-              defaultValue={user.email}
-              margin="normal"
-              disabled
-            />
-            <TextField
-              fullWidth
-              label="Department"
-              defaultValue={user.department}
-              margin="normal"
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setEditDialogOpen(false)}>
-            Cancel
-          </Button>
-          <Button variant="contained" onClick={() => setEditDialogOpen(false)}>
-            Save Changes
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };

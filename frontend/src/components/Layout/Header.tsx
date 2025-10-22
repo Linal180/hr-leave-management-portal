@@ -18,7 +18,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { ROLES } from '../../constants';
+import { ROLES, APP_STRINGS } from '../../constants';
 
 const Header: React.FC = () => {
   const { user, logout } = useAuth();
@@ -43,6 +43,10 @@ const Header: React.FC = () => {
     handleClose();
   };
 
+  const handleTitleClick = () => {
+    navigate('/');
+  };
+
   const getRoleDisplayName = (role: string) => {
     return role === ROLES.MANAGER ? 'Manager' : 'Employee';
   };
@@ -59,8 +63,20 @@ const Header: React.FC = () => {
   return (
     <AppBar position="static" elevation={1}>
       <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-          Leave Request System
+        <Typography 
+          variant="h6" 
+          component="div" 
+          sx={{ 
+            flexGrow: 1, 
+            fontWeight: 'bold',
+            cursor: 'pointer',
+            '&:hover': {
+              opacity: 0.8
+            }
+          }}
+          onClick={handleTitleClick}
+        >
+          {APP_STRINGS.LEAVE_REQUEST_SYSTEM}
         </Typography>
         
         {user && (
@@ -111,11 +127,11 @@ const Header: React.FC = () => {
             >
               <MenuItem onClick={handleProfileClick}>
                 <Person sx={{ mr: 1 }} />
-                Profile
+                {APP_STRINGS.PROFILE}
               </MenuItem>
               <MenuItem onClick={handleLogout}>
                 <Logout sx={{ mr: 1 }} />
-                Logout
+                {APP_STRINGS.LOGOUT}
               </MenuItem>
             </Menu>
           </Box>
