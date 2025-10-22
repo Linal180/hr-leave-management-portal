@@ -38,14 +38,38 @@ export const STORAGE_KEYS = {
 
 // API Configuration
 export const API_CONFIG = {
-  BASE_URL: process.env.REACT_APP_API_URL || 'http://localhost:3001/api'
+  BASE_URL: process.env.REACT_APP_API_URL || 'http://localhost:3001/api',
+  ENDPOINTS: {
+    AUTH: {
+      LOGIN: '/auth/login',
+      PROFILE: '/auth/profile',
+      USERS: '/auth/users'
+    },
+    LEAVE: {
+      APPLY: '/leave/apply',
+      PENDING: '/leave/pending',
+      MY_REQUESTS: '/leave/my-requests',
+      ALL: '/leave/all',
+      APPROVE: '/leave/approve',
+      SUMMARY: '/leave/summary'
+    }
+  }
 } as const;
 
 // Validation Rules
 export const VALIDATION_RULES = {
   REASON_MAX_LENGTH: 500,
   MIN_LEAVE_DURATION: 1,
-  MAX_LEAVE_DURATION: 30
+  MAX_LEAVE_DURATION: 30,
+  DATE: {
+    REQUIRED: 'Date is required',
+    PAST_DATE: 'Start date cannot be in the past',
+    INVALID_RANGE: 'End date must be after start date'
+  },
+  LEAVE_REASON: {
+    REQUIRED: 'Reason is required',
+    MAX_LENGTH: 'Reason must be less than 500 characters'
+  }
 } as const;
 
 // Application Strings
@@ -144,7 +168,8 @@ export const MESSAGES = {
     LEAVE_APPLICATION_FAILED: 'Failed to submit leave request. Please try again.',
     LEAVE_APPROVAL_FAILED: 'Failed to process leave request. Please try again.',
     FETCH_LEAVE_REQUESTS_FAILED: 'Failed to fetch leave requests. Please try again.',
-    FETCH_SUMMARY_FAILED: 'Failed to fetch leave summary. Please try again.'
+    FETCH_SUMMARY_FAILED: 'Failed to fetch leave summary. Please try again.',
+    GENERIC_ERROR: 'An error occurred. Please try again.'
   },
   VALIDATION: {
     REQUIRED_FIELD: 'This field is required',
@@ -156,5 +181,9 @@ export const MESSAGES = {
     INSUFFICIENT_LEAVE_BALANCE: 'Insufficient leave balance',
     DATE_OVERLAP: 'Leave dates overlap with existing request',
     INVALID_DATE_RANGE: 'Invalid date range'
+  },
+  INFO: {
+    NO_PENDING_REQUESTS: 'No pending leave requests found.',
+    NO_LEAVE_REQUESTS: 'No leave requests found.'
   }
 } as const;

@@ -31,10 +31,6 @@ const MonthlySummary: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
 
-  useEffect(() => {
-    fetchSummary();
-  }, [fetchSummary]);
-
   const fetchSummary = useCallback(async () => {
     try {
       setLoading(true);
@@ -47,6 +43,10 @@ const MonthlySummary: React.FC = () => {
       setLoading(false);
     }
   }, [selectedYear, selectedMonth]);
+
+  useEffect(() => {
+    fetchSummary();
+  }, [fetchSummary]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
