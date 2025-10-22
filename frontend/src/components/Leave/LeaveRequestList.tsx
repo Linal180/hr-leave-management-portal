@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Card,
@@ -18,10 +18,6 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Alert,
   CircularProgress,
   IconButton,
@@ -30,10 +26,9 @@ import {
 import {
   CheckCircle,
   Cancel,
-  Visibility,
   Refresh
 } from '@mui/icons-material';
-import { LeaveRequest, LeaveRequestWithEmployee, ApprovalFormData } from '../../types';
+import { LeaveRequestWithEmployee, ApprovalFormData } from '../../types';
 import { LEAVE_STATUS, LEAVE_TYPES, MESSAGES, APP_STRINGS } from '../../constants';
 import apiService from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
@@ -61,7 +56,7 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
   });
   const [approvalLoading, setApprovalLoading] = useState(false);
 
-  const fetchRequests = async () => {
+  const fetchRequests = useCallback(async () => {
     try {
       setLoading(true);
       setError('');
@@ -85,11 +80,11 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [isManager, user]);
 
   useEffect(() => {
     fetchRequests();
-  }, [isManager, refreshTrigger]);
+  }, [isManager, refreshTrigger, fetchRequests]);
 
   const getStatusColor = (status: string) => {
     switch (status) {

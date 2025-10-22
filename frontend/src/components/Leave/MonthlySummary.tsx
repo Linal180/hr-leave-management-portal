@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Card,
@@ -33,9 +33,9 @@ const MonthlySummary: React.FC = () => {
 
   useEffect(() => {
     fetchSummary();
-  }, [selectedYear, selectedMonth]);
+  }, [fetchSummary]);
 
-  const fetchSummary = async () => {
+  const fetchSummary = useCallback(async () => {
     try {
       setLoading(true);
       setError('');
@@ -46,7 +46,7 @@ const MonthlySummary: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedYear, selectedMonth]);
 
   const getStatusColor = (status: string) => {
     switch (status) {

@@ -30,6 +30,17 @@ export const DEMO_CREDENTIALS = {
   }
 } as const;
 
+// Storage Keys
+export const STORAGE_KEYS = {
+  AUTH_TOKEN: 'auth_token',
+  USER_DATA: 'user_data'
+} as const;
+
+// API Configuration
+export const API_CONFIG = {
+  BASE_URL: process.env.REACT_APP_API_URL || 'http://localhost:3001/api'
+} as const;
+
 // Validation Rules
 export const VALIDATION_RULES = {
   REASON_MAX_LENGTH: 500,

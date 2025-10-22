@@ -14,14 +14,13 @@ import {
 } from '@mui/material';
 import {
   Person,
-  Event,
   CheckCircle,
   Pending,
   Cancel,
   Assessment
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
-import { ROLES, APP_STRINGS } from '../constants';
+import { APP_STRINGS } from '../constants';
 import LeaveRequestList from '../components/Leave/LeaveRequestList';
 import MonthlySummary from '../components/Leave/MonthlySummary';
 import apiService from '../services/api';

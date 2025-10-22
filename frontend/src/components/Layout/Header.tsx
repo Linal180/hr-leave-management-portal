@@ -3,16 +3,13 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Button,
   Box,
   Avatar,
   Menu,
   MenuItem,
-  IconButton,
-  Tooltip
+  IconButton
 } from '@mui/material';
 import {
-  AccountCircle,
   Logout,
   Person
 } from '@mui/icons-material';

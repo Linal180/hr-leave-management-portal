@@ -7,24 +7,18 @@ import {
   CardContent,
   Chip,
   Alert,
-  Paper,
   Avatar,
   Divider
 } from '@mui/material';
 import {
-  Person,
-  Event,
-  CheckCircle,
-  Pending,
   CalendarToday,
   Business,
-  Security
+  Email
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 import { ROLES, APP_STRINGS } from '../constants';
 import LeaveForm from '../components/Leave/LeaveForm';
 import LeaveRequestList from '../components/Leave/LeaveRequestList';
-import { Email } from '@mui/icons-material';
 
 const EmployeeDashboard: React.FC = () => {
   const { user } = useAuth();
