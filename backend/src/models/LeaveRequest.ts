@@ -14,6 +14,7 @@ export class LeaveRequest implements ILeaveRequest {
   public rejectionReason?: string | null;
   public createdAt: Date;
   public updatedAt: Date;
+  public duration: number;
 
   constructor(
     id?: string,
@@ -36,6 +37,7 @@ export class LeaveRequest implements ILeaveRequest {
     this.rejectionReason = null;
     this.createdAt = new Date();
     this.updatedAt = new Date();
+    this.duration = this.getDuration();
   }
 
   static createMockRequests(): LeaveRequest[] {
