@@ -1,0 +1,127 @@
+import { v4 as uuidv4 } from 'uuid';
+import { LeaveRequest as ILeaveRequest } from '../types';
+
+export class LeaveRequest implements ILeaveRequest {
+  public id: string;
+  public employeeId: string;
+  public startDate: string;
+  public endDate: string;
+  public reason: string;
+  public type: 'annual' | 'sick' | 'personal';
+  public status: 'pending' | 'approved' | 'rejected';
+  public approvedBy?: string | null;
+  public approvedAt?: Date | null;
+  public rejectionReason?: string | null;
+  public createdAt: Date;
+  public updatedAt: Date;
+
+  constructor(
+    id?: string,
+    employeeId?: string,
+    startDate?: string,
+    endDate?: string,
+    reason?: string,
+    type: 'annual' | 'sick' | 'personal' = 'annual',
+    status: 'pending' | 'approved' | 'rejected' = 'pending'
+  ) {
+    this.id = id || uuidv4();
+    this.employeeId = employeeId || '';
+    this.startDate = startDate || '';
+    this.endDate = endDate || '';
+    this.reason = reason || '';
+    this.type = type;
+    this.status = status;
+    this.approvedBy = null;
+    this.approvedAt = null;
+    this.rejectionReason = null;
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
+
+  static createMockRequests(): LeaveRequest[] {
+    const now = new Date();
+    const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const twoWeeksLater = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+    const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+
+    return [
+      new LeaveRequest(
+        'leave-1',
+        'user-1',
+        nextWeek.toISOString().split('T')[0],
+        new Date(nextWeek.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        'Family vacation',
+        'annual',
+        'pending'
+      ),
+      new LeaveRequest(
+        'leave-2',
+        'user-2',
+        new Date(nextWeek.getTime() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        new Date(nextWeek.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        'Medical appointment',
+        'sick',
+        'pending'
+      ),
+      new LeaveRequest(
+        'leave-3',
+        'user-1',
+        lastWeek.toISOString().split('T')[0],
+        twoWeeksAgo.toISOString().split('T')[0],
+        'Personal matters',
+        'personal',
+        'approved'
+      ),
+      new LeaveRequest(
+        'leave-4',
+        'user-5',
+        new Date(nextWeek.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        new Date(nextWeek.getTime() + 9 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        'Wedding',
+        'annual',
+        'pending'
+      )
+    ];
+  }
+
+  approve(managerId: string): void {
+    this.status = 'approved';
+    this.approvedBy = managerId;
+    this.approvedAt = new Date();
+    this.updatedAt = new Date();
+  }
+
+  reject(managerId: string, reason: string): void {
+    this.status = 'rejected';
+    this.approvedBy = managerId;
+    this.approvedAt = new Date();
+    this.rejectionReason = reason;
+    this.updatedAt = new Date();
+  }
+
+  getDuration(): number {
+    const startDate = new Date(this.startDate);
+    const endDate = new Date(this.endDate);
+    const timeDiff = endDate.getTime() - startDate.getTime();
+    return Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1 to include both start and end dates
+  }
+
+  toJSON(): ILeaveRequest {
+    return {
+      id: this.id,
+      employeeId: this.employeeId,
+      startDate: this.startDate,
+      endDate: this.endDate,
+      reason: this.reason,
+      type: this.type,
+      status: this.status,
+      approvedBy: this.approvedBy,
+      approvedAt: this.approvedAt,
+      rejectionReason: this.rejectionReason,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      duration: this.getDuration()
+    };
+  }
+}
