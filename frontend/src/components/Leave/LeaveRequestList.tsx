@@ -34,7 +34,7 @@ import {
   Refresh
 } from '@mui/icons-material';
 import { LeaveRequest, LeaveRequestWithEmployee, ApprovalFormData } from '../../types';
-import { LEAVE_STATUS, LEAVE_TYPES, MESSAGES } from '../../constants';
+import { LEAVE_STATUS, LEAVE_TYPES, MESSAGES, APP_STRINGS } from '../../constants';
 import apiService from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -107,11 +107,11 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
   const getLeaveTypeLabel = (type: string) => {
     switch (type) {
       case LEAVE_TYPES.ANNUAL:
-        return 'Annual';
+        return APP_STRINGS.ANNUAL_LEAVE;
       case LEAVE_TYPES.SICK:
-        return 'Sick';
+        return APP_STRINGS.SICK_LEAVE;
       case LEAVE_TYPES.PERSONAL:
-        return 'Personal';
+        return APP_STRINGS.PERSONAL_LEAVE;
       default:
         return type;
     }
@@ -166,9 +166,9 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
       <CardContent>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h5" component="h2">
-            {isManager ? 'Pending Leave Requests' : 'My Leave Requests'}
+            {isManager ? APP_STRINGS.PENDING_LEAVE_REQUESTS : APP_STRINGS.MY_LEAVE_REQUESTS}
           </Typography>
-          <Tooltip title="Refresh">
+          <Tooltip title={APP_STRINGS.REFRESH}>
             <IconButton onClick={fetchRequests}>
               <Refresh />
             </IconButton>
@@ -249,7 +249,7 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
                     {isManager && request.status === LEAVE_STATUS.PENDING && (
                       <TableCell>
                         <Box display="flex" gap={1}>
-                          <Tooltip title="Approve">
+                          <Tooltip title={APP_STRINGS.APPROVE}>
                             <IconButton 
                               size="small" 
                               color="success"
@@ -258,7 +258,7 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
                               <CheckCircle />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Reject">
+                          <Tooltip title={APP_STRINGS.REJECT}>
                             <IconButton 
                               size="small" 
                               color="error"
@@ -280,7 +280,7 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
         {/* Approval Dialog */}
         <Dialog open={approvalDialogOpen} onClose={() => setApprovalDialogOpen(false)} maxWidth="sm" fullWidth>
           <DialogTitle>
-            {approvalForm.action === 'approve' ? 'Approve Leave Request' : 'Reject Leave Request'}
+            {approvalForm.action === 'approve' ? `${APP_STRINGS.APPROVE} Leave Request` : `${APP_STRINGS.REJECT} Leave Request`}
           </DialogTitle>
           <DialogContent>
             {selectedRequest && (
@@ -298,7 +298,7 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
                 {approvalForm.action === 'reject' && (
                   <TextField
                     fullWidth
-                    label="Rejection Reason"
+                    label={APP_STRINGS.REJECTION_REASON}
                     multiline
                     rows={3}
                     value={approvalForm.rejectionReason}
@@ -326,7 +326,7 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
               {approvalLoading ? (
                 <CircularProgress size={20} />
               ) : (
-                approvalForm.action === 'approve' ? 'Approve' : 'Reject'
+                approvalForm.action === 'approve' ? APP_STRINGS.APPROVE : APP_STRINGS.REJECT
               )}
             </Button>
           </DialogActions>

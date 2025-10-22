@@ -19,7 +19,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { LeaveFormData, LeaveApplicationRequest } from '../../types';
-import { LEAVE_TYPES, MESSAGES, VALIDATION_RULES } from '../../constants';
+import { LEAVE_TYPES, MESSAGES, VALIDATION_RULES, APP_STRINGS } from '../../constants';
 import apiService from '../../services/api';
 
 interface LeaveFormProps {
@@ -184,11 +184,11 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
   const getLeaveTypeLabel = (type: string) => {
     switch (type) {
       case LEAVE_TYPES.ANNUAL:
-        return 'Annual Leave';
+        return APP_STRINGS.ANNUAL_LEAVE;
       case LEAVE_TYPES.SICK:
-        return 'Sick Leave';
+        return APP_STRINGS.SICK_LEAVE;
       case LEAVE_TYPES.PERSONAL:
-        return 'Personal Leave';
+        return APP_STRINGS.PERSONAL_LEAVE;
       default:
         return type;
     }
@@ -218,7 +218,7 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <DatePicker
-                  label="Start Date"
+                  label={APP_STRINGS.START_DATE}
                   value={startDate}
                   onChange={(value) => handleDateChange('startDate', value)}
                   minDate={dayjs()}
@@ -235,7 +235,7 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
               
               <Grid item xs={12} sm={6}>
                 <DatePicker
-                  label="End Date"
+                  label={APP_STRINGS.END_DATE}
                   value={endDate}
                   onChange={(value) => handleDateChange('endDate', value)}
                   minDate={startDate || dayjs()}
@@ -252,11 +252,11 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
               
               <Grid item xs={12}>
                 <FormControl fullWidth required>
-                  <InputLabel>Leave Type</InputLabel>
+                  <InputLabel>{APP_STRINGS.LEAVE_TYPE}</InputLabel>
                   <Select
                     name="type"
                     value={formData.type}
-                    label="Leave Type"
+                    label={APP_STRINGS.LEAVE_TYPE}
                     onChange={handleSelectChange}
                   >
                     <MenuItem value={LEAVE_TYPES.ANNUAL}>
@@ -275,7 +275,7 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  label="Reason"
+                  label={APP_STRINGS.REASON}
                   name="reason"
                   value={formData.reason}
                   onChange={handleInputChange}
@@ -298,7 +298,7 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
                   {isLoading ? (
                     <CircularProgress size={24} color="inherit" />
                   ) : (
-                    'Submit Leave Request'
+                    APP_STRINGS.SUBMIT_LEAVE_REQUEST
                   )}
                 </Button>
               </Grid>

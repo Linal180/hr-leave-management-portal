@@ -15,7 +15,7 @@ import {
   Divider
 } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
-import { DEMO_CREDENTIALS, MESSAGES } from '../../constants';
+import { DEMO_CREDENTIALS, MESSAGES, APP_STRINGS } from '../../constants';
 
 const LoginForm: React.FC = () => {
   const { login, isLoading } = useAuth();
@@ -77,11 +77,11 @@ const LoginForm: React.FC = () => {
       <Card sx={{ maxWidth: 400, width: '100%' }}>
         <CardContent sx={{ p: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ mb: 3 }}>
-            Leave Request System
+            {APP_STRINGS.LEAVE_REQUEST_SYSTEM}
           </Typography>
           
           <Typography variant="body2" color="text.secondary" align="center" sx={{ mb: 3 }}>
-            Sign in to your account
+            {APP_STRINGS.SIGN_IN_TO_ACCOUNT}
           </Typography>
 
           {error && (
@@ -91,30 +91,30 @@ const LoginForm: React.FC = () => {
           )}
 
           <FormControl fullWidth sx={{ mb: 3 }}>
-            <InputLabel>Demo User</InputLabel>
+            <InputLabel>{APP_STRINGS.DEMO_USER}</InputLabel>
             <Select
               value={demoUser}
-              label="Demo User"
+              label={APP_STRINGS.DEMO_USER}
               onChange={handleDemoUserChange}
             >
               <MenuItem value="">
-                <em>Select a demo user</em>
+                <em>{APP_STRINGS.SELECT_DEMO_USER}</em>
               </MenuItem>
-              <MenuItem value="employee">Employee (John Doe)</MenuItem>
-              <MenuItem value="manager">Manager (Mike Johnson)</MenuItem>
+              <MenuItem value="employee">{APP_STRINGS.EMPLOYEE_JOHN_DOE}</MenuItem>
+              <MenuItem value="manager">{APP_STRINGS.MANAGER_MIKE_JOHNSON}</MenuItem>
             </Select>
           </FormControl>
 
           <Divider sx={{ mb: 3 }}>
             <Typography variant="body2" color="text.secondary">
-              OR
+              {APP_STRINGS.OR}
             </Typography>
           </Divider>
 
           <Box component="form" onSubmit={handleSubmit}>
             <TextField
               fullWidth
-              label="Email"
+              label={APP_STRINGS.EMAIL}
               name="email"
               type="email"
               value={formData.email}
@@ -127,7 +127,7 @@ const LoginForm: React.FC = () => {
             
             <TextField
               fullWidth
-              label="Password"
+              label={APP_STRINGS.PASSWORD}
               name="password"
               type="password"
               value={formData.password}
@@ -147,20 +147,20 @@ const LoginForm: React.FC = () => {
               {isLoading ? (
                 <CircularProgress size={24} color="inherit" />
               ) : (
-                'Sign In'
+                APP_STRINGS.SIGN_IN
               )}
             </Button>
           </Box>
 
           <Box sx={{ mt: 3, p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
             <Typography variant="caption" color="text.secondary" display="block" align="center">
-              Demo Credentials:
+              {APP_STRINGS.DEMO_CREDENTIALS}
             </Typography>
             <Typography variant="caption" color="text.secondary" display="block" align="center">
-              Employee: john.doe@company.com / password123
+              {APP_STRINGS.EMPLOYEE_CREDENTIALS}
             </Typography>
             <Typography variant="caption" color="text.secondary" display="block" align="center">
-              Manager: mike.johnson@company.com / password123
+              {APP_STRINGS.MANAGER_CREDENTIALS}
             </Typography>
           </Box>
         </CardContent>

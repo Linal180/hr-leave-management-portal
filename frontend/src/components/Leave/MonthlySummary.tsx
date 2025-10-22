@@ -21,7 +21,7 @@ import {
   Grid
 } from '@mui/material';
 import { MonthlySummary as IMonthlySummary } from '../../types';
-import { LEAVE_STATUS, LEAVE_TYPES } from '../../constants';
+import { LEAVE_STATUS, LEAVE_TYPES, APP_STRINGS } from '../../constants';
 import apiService from '../../services/api';
 
 const MonthlySummary: React.FC = () => {
@@ -96,10 +96,10 @@ const MonthlySummary: React.FC = () => {
         <Grid container spacing={2} sx={{ mb: 3 }}>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Year</InputLabel>
+              <InputLabel>{APP_STRINGS.YEAR}</InputLabel>
               <Select
                 value={selectedYear}
-                label="Year"
+                label={APP_STRINGS.YEAR}
                 onChange={(e) => setSelectedYear(Number(e.target.value))}
               >
                 {years.map(year => (
@@ -112,10 +112,10 @@ const MonthlySummary: React.FC = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel>Month</InputLabel>
+              <InputLabel>{APP_STRINGS.MONTH}</InputLabel>
               <Select
                 value={selectedMonth}
-                label="Month"
+                label={APP_STRINGS.MONTH}
                 onChange={(e) => setSelectedMonth(Number(e.target.value))}
               >
                 {monthNames.map((month, index) => (
