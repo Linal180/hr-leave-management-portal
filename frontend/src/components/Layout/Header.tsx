@@ -8,18 +8,21 @@ import {
   Avatar,
   Menu,
   MenuItem,
-  IconButton
+  IconButton,
+  Tooltip
 } from '@mui/material';
 import {
   AccountCircle,
   Logout,
   Person
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { ROLES } from '../../constants';
 
 const Header: React.FC = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -32,6 +35,11 @@ const Header: React.FC = () => {
 
   const handleLogout = () => {
     logout();
+    handleClose();
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
     handleClose();
   };
 
@@ -101,7 +109,7 @@ const Header: React.FC = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={handleProfileClick}>
                 <Person sx={{ mr: 1 }} />
                 Profile
               </MenuItem>

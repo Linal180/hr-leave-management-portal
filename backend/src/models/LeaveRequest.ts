@@ -44,6 +44,12 @@ export class LeaveRequest implements ILeaveRequest {
     const twoWeeksLater = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
     const lastWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
     const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+    
+    // Add some October 2025 data for testing
+    const oct2025 = new Date('2025-10-15');
+    const oct2025End = new Date('2025-10-17');
+    const oct2025Pending = new Date('2025-10-20');
+    const oct2025PendingEnd = new Date('2025-10-22');
 
     return [
       new LeaveRequest(
@@ -81,6 +87,34 @@ export class LeaveRequest implements ILeaveRequest {
         'Wedding',
         'annual',
         'pending'
+      ),
+      // October 2025 data
+      new LeaveRequest(
+        'leave-5',
+        'user-1',
+        oct2025.toISOString().split('T')[0],
+        oct2025End.toISOString().split('T')[0],
+        'Conference attendance',
+        'annual',
+        'approved'
+      ),
+      new LeaveRequest(
+        'leave-6',
+        'user-2',
+        oct2025Pending.toISOString().split('T')[0],
+        oct2025PendingEnd.toISOString().split('T')[0],
+        'Personal leave',
+        'personal',
+        'pending'
+      ),
+      new LeaveRequest(
+        'leave-7',
+        'user-1',
+        '2025-10-29',
+        '2025-10-31',
+        'Holiday break',
+        'annual',
+        'rejected'
       )
     ];
   }

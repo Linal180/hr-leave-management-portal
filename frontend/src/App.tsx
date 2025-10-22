@@ -8,6 +8,7 @@ import Layout from './components/Layout/Layout';
 import LoginPage from './pages/LoginPage';
 import EmployeeDashboard from './pages/EmployeeDashboard';
 import ManagerDashboard from './pages/ManagerDashboard';
+import UserProfile from './components/Profile/UserProfile';
 
 // Create Material-UI theme
 const theme = createTheme({
@@ -112,6 +113,15 @@ const AppRoutes: React.FC = () => {
         element={
           <ProtectedRoute requiredRole={ROLES.MANAGER}>
             <ManagerDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <UserProfile />
           </ProtectedRoute>
         }
       />

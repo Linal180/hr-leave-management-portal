@@ -6,13 +6,19 @@ import {
   Card,
   CardContent,
   Chip,
-  Alert
+  Alert,
+  Paper,
+  Avatar,
+  Divider
 } from '@mui/material';
 import {
   Person,
   Event,
   CheckCircle,
-  Pending
+  Pending,
+  CalendarToday,
+  Business,
+  Security
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 import { ROLES } from '../constants';
@@ -48,24 +54,36 @@ const EmployeeDashboard: React.FC = () => {
       <Grid container spacing={3} sx={{ mt: 2 }}>
         {/* User Info Card */}
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ height: '100%' }}>
             <CardContent>
-              <Box display="flex" alignItems="center" mb={2}>
-                <Person sx={{ mr: 1, color: 'primary.main' }} />
-                <Typography variant="h6">Profile</Typography>
+              <Box display="flex" alignItems="center" mb={3}>
+                <Avatar
+                  sx={{
+                    width: 60,
+                    height: 60,
+                    bgcolor: 'primary.main',
+                    mr: 2
+                  }}
+                >
+                  {user.name.split(' ').map(word => word.charAt(0)).join('').toUpperCase()}
+                </Avatar>
+                <Box>
+                  <Typography variant="h6" fontWeight="bold">
+                    {user.name}
+                  </Typography>
+                  <Chip 
+                    label={user.role === ROLES.MANAGER ? 'Manager' : 'Employee'} 
+                    color="primary" 
+                    size="small"
+                  />
+                </Box>
               </Box>
               
-              <Box mb={2}>
-                <Typography variant="body2" color="text.secondary">
-                  Name
-                </Typography>
-                <Typography variant="body1" fontWeight="medium">
-                  {user.name}
-                </Typography>
-              </Box>
+              <Divider sx={{ mb: 2 }} />
               
               <Box mb={2}>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                  <Email sx={{ mr: 1, fontSize: 16 }} />
                   Email
                 </Typography>
                 <Typography variant="body1">
@@ -74,7 +92,8 @@ const EmployeeDashboard: React.FC = () => {
               </Box>
               
               <Box mb={2}>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                  <Business sx={{ mr: 1, fontSize: 16 }} />
                   Department
                 </Typography>
                 <Typography variant="body1">
@@ -82,22 +101,12 @@ const EmployeeDashboard: React.FC = () => {
                 </Typography>
               </Box>
               
-              <Box mb={2}>
-                <Typography variant="body2" color="text.secondary">
-                  Role
-                </Typography>
-                <Chip 
-                  label={user.role === ROLES.MANAGER ? 'Manager' : 'Employee'} 
-                  color="primary" 
-                  size="small"
-                />
-              </Box>
-              
               <Box>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+                  <CalendarToday sx={{ mr: 1, fontSize: 16 }} />
                   Leave Balance
                 </Typography>
-                <Typography variant="h5" color="primary.main" fontWeight="bold">
+                <Typography variant="h4" color="primary.main" fontWeight="bold">
                   {user.leaveBalance} days
                 </Typography>
               </Box>
