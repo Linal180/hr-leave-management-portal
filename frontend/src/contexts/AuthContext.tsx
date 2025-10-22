@@ -71,11 +71,24 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem(STORAGE_KEYS.USER_DATA);
   };
 
+  const refreshUser = async (): Promise<void> => {
+    if (!token) return;
+    
+    try {
+      const userProfile = await apiService.getProfile();
+      setUser(userProfile);
+      localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userProfile));
+    } catch (error) {
+      console.error('Failed to refresh user profile:', error);
+    }
+  };
+
   const value: AuthContextType = {
     user,
     token,
     login,
     logout,
+    refreshUser,
     isLoading,
     isAuthenticated: !!user && !!token
   };

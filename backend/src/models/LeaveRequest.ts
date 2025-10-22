@@ -75,8 +75,8 @@ export class LeaveRequest implements ILeaveRequest {
       new LeaveRequest(
         'leave-3',
         'user-1',
-        lastWeek.toISOString().split('T')[0],
         twoWeeksAgo.toISOString().split('T')[0],
+        lastWeek.toISOString().split('T')[0],
         'Personal matters',
         'personal',
         'approved'

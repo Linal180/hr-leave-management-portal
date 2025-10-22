@@ -41,10 +41,10 @@ interface LeaveRequestListProps {
 
 const LeaveRequestList: React.FC<LeaveRequestListProps> = ({ 
   isManager = false, 
-  refreshTrigger = 0,
-  onRefresh
+  refreshTrigger = 0, 
+  onRefresh 
 }) => {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const [requests, setRequests] = useState<LeaveRequestWithEmployee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
@@ -136,6 +136,11 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
       fetchRequests(); // Refresh the list
       if (onRefresh) {
         onRefresh(); // Also refresh parent component
+      }
+      
+      // Refresh user profile to update leave balance
+      if (approvalForm.action === 'approve') {
+        await refreshUser();
       }
     } catch (err: any) {
       setError(err.response?.data?.message || MESSAGES.ERROR.GENERIC_ERROR);
