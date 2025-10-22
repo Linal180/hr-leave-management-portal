@@ -72,10 +72,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const refreshUser = async (): Promise<void> => {
-    if (!token) return;
+    if (!token) {
+      console.log('No token available for refreshUser');
+      return;
+    }
     
     try {
+      console.log('Refreshing user profile...');
       const userProfile = await apiService.getProfile();
+      console.log('Updated user profile:', userProfile);
       setUser(userProfile);
       localStorage.setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userProfile));
     } catch (error) {

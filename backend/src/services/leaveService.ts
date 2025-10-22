@@ -131,11 +131,17 @@ class LeaveService {
         throw new Error(MESSAGES.ERROR.INSUFFICIENT_BALANCE);
       }
 
+      console.log(`Approving leave request ${requestId} for employee ${employee.id}`);
+      console.log(`Employee leave balance before: ${employee.leaveBalance}`);
+      console.log(`Leave duration: ${request.getDuration()}`);
+
       // Approve the request
       request.approve(managerId);
       
       // Deduct leave balance
       employee.leaveBalance -= request.getDuration();
+      
+      console.log(`Employee leave balance after: ${employee.leaveBalance}`);
       
       return {
         message: MESSAGES.SUCCESS.LEAVE_APPROVED,

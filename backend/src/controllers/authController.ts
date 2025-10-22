@@ -27,9 +27,11 @@ export class AuthController {
   // Get current user profile
   async getProfile(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
+      console.log('Getting profile for user ID:', req.user.id);
       const user = authService.getUserById(req.user.id);
       
       if (!user) {
+        console.log('User not found for ID:', req.user.id);
         res.status(STATUS_CODES.NOT_FOUND).json({
           success: false,
           message: MESSAGES.ERROR.NOT_FOUND
@@ -37,6 +39,7 @@ export class AuthController {
         return;
       }
 
+      console.log('User profile found:', user.toJSON());
       res.status(STATUS_CODES.OK).json({
         success: true,
         data: user.toJSON()

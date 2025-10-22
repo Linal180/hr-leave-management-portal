@@ -140,7 +140,9 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
       
       // Refresh user profile to update leave balance
       if (approvalForm.action === 'approve') {
+        console.log('Approving leave request, refreshing user profile...');
         await refreshUser();
+        console.log('User profile refreshed after approval');
       }
     } catch (err: any) {
       setError(err.response?.data?.message || MESSAGES.ERROR.GENERIC_ERROR);
