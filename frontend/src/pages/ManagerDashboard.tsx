@@ -7,14 +7,18 @@ import {
   CardContent,
   Chip,
   Alert,
-  CircularProgress
+  CircularProgress,
+  Tabs,
+  Tab,
+  Badge
 } from '@mui/material';
 import {
   Person,
   Event,
   CheckCircle,
   Pending,
-  Cancel
+  Cancel,
+  Assessment
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 import { ROLES } from '../constants';
@@ -23,11 +27,32 @@ import MonthlySummary from '../components/Leave/MonthlySummary';
 import apiService from '../services/api';
 import { LeaveRequestWithEmployee } from '../types';
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+const TabPanel: React.FC<TabPanelProps> = ({ children, value, index, ...other }) => {
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`manager-tabpanel-${index}`}
+      aria-labelledby={`manager-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
+    </div>
+  );
+};
+
 const ManagerDashboard: React.FC = () => {
   const { user } = useAuth();
   const [allRequests, setAllRequests] = useState<LeaveRequestWithEmployee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
+  const [tabValue, setTabValue] = useState(0);
 
   useEffect(() => {
     fetchAllRequests();
@@ -57,6 +82,10 @@ const ManagerDashboard: React.FC = () => {
   const pendingCount = allRequests.filter(req => req.status === 'pending').length;
   const approvedCount = allRequests.filter(req => req.status === 'approved').length;
   const rejectedCount = allRequests.filter(req => req.status === 'rejected').length;
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   return (
     <Box>
@@ -184,23 +213,52 @@ const ManagerDashboard: React.FC = () => {
           </Grid>
         </Grid>
 
-        {/* Pending Requests */}
+        {/* Tabs Section */}
         <Grid item xs={12}>
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-          <LeaveRequestList 
-            isManager={true} 
-            refreshTrigger={allRequests.length}
-            onRefresh={fetchAllRequests}
-          />
-        </Grid>
+          <Card>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tabs 
+                value={tabValue} 
+                onChange={handleTabChange} 
+                aria-label="manager dashboard tabs"
+                variant="fullWidth"
+              >
+                <Tab 
+                  icon={
+                    <Badge badgeContent={pendingCount} color="error">
+                      <Pending />
+                    </Badge>
+                  } 
+                  label="Pending Requests" 
+                  iconPosition="start"
+                  sx={{ textTransform: 'none', fontWeight: 'medium' }}
+                />
+                <Tab 
+                  icon={<Assessment />} 
+                  label="Monthly Summary" 
+                  iconPosition="start"
+                  sx={{ textTransform: 'none', fontWeight: 'medium' }}
+                />
+              </Tabs>
+            </Box>
 
-        {/* Monthly Summary */}
-        <Grid item xs={12}>
-          <MonthlySummary />
+            <TabPanel value={tabValue} index={0}>
+              {error && (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                  {error}
+                </Alert>
+              )}
+              <LeaveRequestList 
+                isManager={true} 
+                refreshTrigger={allRequests.length}
+                onRefresh={fetchAllRequests}
+              />
+            </TabPanel>
+
+            <TabPanel value={tabValue} index={1}>
+              <MonthlySummary />
+            </TabPanel>
+          </Card>
         </Grid>
       </Grid>
     </Box>
