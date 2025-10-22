@@ -233,11 +233,18 @@ const LeaveRequestList: React.FC<LeaveRequestListProps> = ({
                       </Tooltip>
                     </TableCell>
                     <TableCell>
-                      <Chip 
-                        label={request.status} 
-                        color={getStatusColor(request.status) as any}
-                        size="small"
-                      />
+                      <Box>
+                        <Chip 
+                          label={request.status} 
+                          color={getStatusColor(request.status) as any}
+                          size="small"
+                        />
+                        {request.status === LEAVE_STATUS.REJECTED && request.rejectionReason && (
+                          <Typography variant="caption" color="error" display="block" sx={{ mt: 0.5 }}>
+                            Reason: {request.rejectionReason}
+                          </Typography>
+                        )}
+                      </Box>
                     </TableCell>
                     {isManager && request.status === LEAVE_STATUS.PENDING && (
                       <TableCell>

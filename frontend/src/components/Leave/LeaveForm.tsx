@@ -38,6 +38,11 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<{
+    startDate?: string;
+    endDate?: string;
+    reason?: string;
+  }>({});
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,6 +52,13 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
     }));
     setError('');
     setSuccess('');
+    // Clear field-specific error when user starts typing
+    if (fieldErrors[name as keyof typeof fieldErrors]) {
+      setFieldErrors(prev => ({
+        ...prev,
+        [name]: undefined
+      }));
+    }
   };
 
   const handleSelectChange = (e: any) => {
@@ -75,39 +87,56 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
     }
     setError('');
     setSuccess('');
+    // Clear field-specific error when user selects a date
+    if (fieldErrors[field]) {
+      setFieldErrors(prev => ({
+        ...prev,
+        [field]: undefined
+      }));
+    }
   };
 
   const validateForm = (): boolean => {
-    if (!formData.startDate || !formData.endDate) {
-      setError('Please select both start and end dates');
-      return false;
+    const errors: { startDate?: string; endDate?: string; reason?: string } = {};
+    let isValid = true;
+
+    // Validate start date
+    if (!formData.startDate) {
+      errors.startDate = VALIDATION_RULES.DATE.REQUIRED;
+      isValid = false;
+    } else {
+      const start = dayjs(formData.startDate);
+      const today = dayjs().startOf('day');
+      if (start.isBefore(today)) {
+        errors.startDate = VALIDATION_RULES.DATE.PAST_DATE;
+        isValid = false;
+      }
     }
 
+    // Validate end date
+    if (!formData.endDate) {
+      errors.endDate = VALIDATION_RULES.DATE.REQUIRED;
+      isValid = false;
+    } else if (formData.startDate) {
+      const start = dayjs(formData.startDate);
+      const end = dayjs(formData.endDate);
+      if (end.isBefore(start)) {
+        errors.endDate = VALIDATION_RULES.DATE.INVALID_RANGE;
+        isValid = false;
+      }
+    }
+
+    // Validate reason
     if (!formData.reason.trim()) {
-      setError(VALIDATION_RULES.LEAVE_REASON.REQUIRED);
-      return false;
+      errors.reason = VALIDATION_RULES.LEAVE_REASON.REQUIRED;
+      isValid = false;
+    } else if (formData.reason.length > 500) {
+      errors.reason = VALIDATION_RULES.LEAVE_REASON.MAX_LENGTH;
+      isValid = false;
     }
 
-    if (formData.reason.length > 500) {
-      setError(VALIDATION_RULES.LEAVE_REASON.MAX_LENGTH);
-      return false;
-    }
-
-    const start = dayjs(formData.startDate);
-    const end = dayjs(formData.endDate);
-    const today = dayjs().startOf('day');
-
-    if (start.isBefore(today)) {
-      setError(VALIDATION_RULES.DATE.PAST_DATE);
-      return false;
-    }
-
-    if (end.isBefore(start)) {
-      setError(VALIDATION_RULES.DATE.INVALID_RANGE);
-      return false;
-    }
-
-    return true;
+    setFieldErrors(errors);
+    return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -196,7 +225,9 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
                   slotProps={{
                     textField: {
                       fullWidth: true,
-                      required: true
+                      required: true,
+                      error: !!fieldErrors.startDate,
+                      helperText: fieldErrors.startDate
                     }
                   }}
                 />
@@ -211,7 +242,9 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
                   slotProps={{
                     textField: {
                       fullWidth: true,
-                      required: true
+                      required: true,
+                      error: !!fieldErrors.endDate,
+                      helperText: fieldErrors.endDate
                     }
                   }}
                 />
@@ -249,7 +282,8 @@ const LeaveForm: React.FC<LeaveFormProps> = ({ onSuccess }) => {
                   multiline
                   rows={4}
                   required
-                  helperText={`${formData.reason.length}/500 characters`}
+                  error={!!fieldErrors.reason}
+                  helperText={fieldErrors.reason || `${formData.reason.length}/500 characters`}
                 />
               </Grid>
               

@@ -19,6 +19,7 @@ import {
 import { useAuth } from '../contexts/AuthContext';
 import { ROLES } from '../constants';
 import LeaveRequestList from '../components/Leave/LeaveRequestList';
+import MonthlySummary from '../components/Leave/MonthlySummary';
 import apiService from '../services/api';
 import { LeaveRequestWithEmployee } from '../types';
 
@@ -195,6 +196,11 @@ const ManagerDashboard: React.FC = () => {
             refreshTrigger={allRequests.length}
             onRefresh={fetchAllRequests}
           />
+        </Grid>
+
+        {/* Monthly Summary */}
+        <Grid item xs={12}>
+          <MonthlySummary />
         </Grid>
       </Grid>
     </Box>
